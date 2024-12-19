@@ -1,17 +1,21 @@
 import java.util.ArrayList;
+import java.util.Map; 
 
 public class Student {
 
     // instance variables
-    private String name; 
-    private int studentID;
+    private final String name; 
+    private final int studentID; // cannot be modified
     private double overallGrade;
-    // all of the student's assignments 
-    
+    private Map<Assignment, Double> assignments; 
+    // all of the student's assignments. Double is the individual score
+
     // constructor to create new student 
     public Student(String name, int studentID) {
         this.name = name;
         this.studentID = studentID;
+        // to store the students assignments. empty at first
+        this.assignments = new Map<>();
     }
 
     // functions for the student class
@@ -31,11 +35,8 @@ public class Student {
         this.overallGrade = grade; 
     }
 
-    public void setName(String name) {
-        this.name = name; 
-    }
-
-    public void setID(int id) {
-        this.studentID = id; 
+    // to be used with addAssignment in Course 
+    public void addAssignment(Assignment assignment, Double score) {
+        assignments.put(assignment, score);
     }
 }
