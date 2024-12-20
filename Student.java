@@ -9,13 +9,15 @@ public class Student {
     private final int studentID; 
     private double grade;
     private Map<Assignment, Double> assignments; // assn -> score
-   
+    private List<Course> courses; // all of the courses the student has 
     // constructor to create new student 
+   
     public Student(String name, int studentID) {
         this.name = name;
         this.studentID = studentID;
         this.grade = 100.0; // initial grade is 100.0
         this.assignments = new HashMap<>();
+
     }
 
     // functions for the student class
@@ -60,6 +62,7 @@ public class Student {
         }
     } 
 
+    @Override
     public String toString() {
         return "Name: " + name + "\nStudent ID: " + studentID + "\nGrade: " + grade + "% (" + getLetterGrade() + ")";
     }

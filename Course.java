@@ -3,71 +3,63 @@ import java.util.List;
 
 public class Course {
     
-    private String courseName; // ex: "Calculus II"  
-    private String courseID; // ex: "MATH 123"
+    private String courseName; // ex: "calculus ii"  
+    private String courseID; // ex: "math 123"
     private List<Student> students; // student list
-    private List<Assignment> assignments; // all of the assignments 
-    private double classAvg; // average score of the class - must be calculated with setAverage() 
-
+    private List<Assignment> assignments;     
+   
     // constructor to create a new course 
     public Course (String courseID, String courseName) {
-        this.courseName = courseName; 
-        this.courseID = courseID;
+        this.courseID = courseID; 
+        this.courseName = courseName;
         this.students = new ArrayList<>();
         this.assignments = new ArrayList<>();
-        this.classAvg = 0.0;
     }
 
-    // return class average 
-    double total = 0.0; 
-    public double getAverage () {
-        for (Student student : students) {
-            total = total + student.getGrade(); 
-        }
-        classAvg = total / students.size(); 
-        return classAvg; 
-    } 
-
-    public char getAverageLetter () {
-        if (classAvg >= 90.0) {
-            return 'A';
-        } else if (classAvg >= 80.0) {
-            return 'B';
-        } else if (classAvg >= 70.0) {
-            return 'C';
-        } else if (classAvg >= 60.0) {
-            return 'D';
-        } else {
-            return 'F';
-        }
-    }
-    
-    public void addStudent (Student student) {
+    public void addStudent(Student student) {
         students.add(student);
     }
-
-    // search for ID and delete student with that ID
-    // return false is student not found 
-    public boolean removeStudent (int studentID) {
-        for (Student student : students) {
-            if (student.getID() == studentID) {
-                students.remove(student);
-                return true;
-            }
-        }
-        return false; 
+    
+    public boolean removeStudent(int studentID) {
+        return students.removeIf(student -> student.getID() == studentID);
     }
 
-    public void addAssignment (Assignment assignment) {
+    public void addAssignment(Assignment assignment) {
         assignments.add(assignment);
         for (Student student : students) {
-            student.addAssignment(assignment, 0.0);
+            student.addAssignment(assignment, 0.0); // Initialize with a score of 0
         }
     }
 
-    // print out all of the students (retrn list for now, but later on implement it to print out formatted string)
-    public List<Student> getStudents () {
+    public double getAverage() {
+        if (students.isEmpty()) return 0.0; // Prevent division by zero
+        double total = 0.0;
+        for (Student student : students) {
+            total += student.getGrade(); // Use the student's grade
+        }
+        return total / students.size(); // Return the average
+    }
+
+    public char getAverageLetter() {
+        double average = getAverage();
+        if (average >= 90.0) return 'A';
+        if (average >= 80.0) return 'B';
+        if (average >= 70.0) return 'C';
+        if (average >= 60.0) return 'D';
+        return 'F';
+    }
+
+    public List<Student> getStudents() {
         return students;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    @Override
+    public String toString() {
+        return "Course: " + courseName + " (" + courseID + ")";
     }
 }
 

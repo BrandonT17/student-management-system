@@ -1,47 +1,42 @@
 public class Assignment {
-    String name; // name of the Assignment
-    String courseID; // maybe
-    int studentScore; // what did the individual student get
-    int maxScore; // maximum score possible on the assignment 
-    // the student class will contain the individual score 
-    String description; // (optional) description for the assignment
-    
+    private String name; // name of the Assignment
+    private int maxScore; // maximum score possible 
+    private String description; 
 
     public Assignment (String name, int maxScore) {
         this.name = name;
         this.maxScore = maxScore; 
     }
 
-    public Assignment (String name, int maxScore, String des) {
+    public Assignment (String name, int maxScore, String description) {
         this.name = name;
         this.maxScore = maxScore;
-        this.description = des;
+        this.description = description;
     }
 
-    public void changeName (String name) {
-        this.name = name;
+    public String getName () {
+        return name; 
     }
 
-    public void changeMaxScore (int score) {
+    public int getMaxScore () {
+        return maxscore;
+    }
+
+    public void getDescription () {
+        return description;
+    }
+
+    public void setMaxScore (int score) {
         this.maxScore = score; 
-    }
-
-    public void changeStudentScore () {
     }
 
     public void setDescription (String des) {
         this.description = des; 
     }
 
-    public String getName () {
-        return this.name; 
+    public String toString() {
+        return name + " (" + maxScore + " points): " + description; 
     }
 
-    public int getMaxScore () {
-        return this.maxScore;
-    }
-
-    public String getDescription () {
-        return this.description; 
-    }
+    // perhaps add a function to print all assignment details (for the particular student)
 }
