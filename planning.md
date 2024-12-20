@@ -26,10 +26,11 @@ This is an object-oriented programming project in Java. This file will serve as 
 - getName(): retrieve student's name 
 - getID(): retrieve student's ID 
 - getGrade(): retrieve student's letter grade and percentage
-- setGrade(): allow teacher to manually change student's letter grade
-- getAssignments(): display all of a student's assignments with the score
+- getLetterGrade(): calculate and return letter grade based on grade
+- setGrade(): allow teacher to manually change student's grade
+- printAssignments(): display all of a student's assignments with the score
 - displayStudentInfo(): display student's name, ID, and grade (letter+score)
-- add assignment to a student's profile 
+- addAssignment(): add assignment to a student's Assignment's list 
 
 ### COURSE CLASS
 
@@ -43,6 +44,7 @@ This is an object-oriented programming project in Java. This file will serve as 
 **functions:**
 - constructor 
 - getAverage(): calculate class average, store in variable, and return 
+- getAverageLetter(): return average class grade as char
 - addStudent(): add a student to the course 
 - removeStudent(): remove a student from the course 
 - getStudents(): display all the students in the course 
@@ -52,7 +54,20 @@ This is an object-oriented programming project in Java. This file will serve as 
 ### ASSIGNMENT 
 
 **variables:**
+- name
+- studentScore (what did the individual student get on this assignment)
+- maxScore (maximum possible score on the assignment. DEFAULT: 100)
+- description (describe the assignment)
+
 **functions:**
+- constructor (w/o description)
+- constructor (w/ description)
+- changeName(): change the name of the assignment 
+- changeMaxScore(): change the maximum score of the assignment 
+- changeStudentScore(): change a student's score on the assignment
+- setDescription(): edit the assignment's description 
+- getDescription(): display assignment description 
+- getInfo(): display name, description, and maximum score
 
 ### EXAM *(INHERITS ASSIGNMENT)*
 

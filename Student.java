@@ -1,21 +1,21 @@
 import java.util.ArrayList;
 import java.util.Map; 
+import java.util.HashMap;
 
 public class Student {
 
     // instance variables
     private final String name; 
-    private final int studentID; // cannot be modified
-    private double overallGrade;
-    private Map<Assignment, Double> assignments; 
-    // all of the student's assignments. Double is the individual score
-
+    private final int studentID; 
+    private double grade;
+    private Map<Assignment, Double> assignments; // assn -> score
+   
     // constructor to create new student 
     public Student(String name, int studentID) {
         this.name = name;
         this.studentID = studentID;
-        // to store the students assignments. empty at first
-        this.assignments = new Map<>();
+        this.grade = 100.0; // initial grade is 100.0
+        this.assignments = new HashMap<>();
     }
 
     // functions for the student class
@@ -28,15 +28,39 @@ public class Student {
     }
 
     public double getGrade() {
-        return this.overallGrade; 
+        return this.grade; 
+    }
+
+    public char getLetterGrade() {
+        if (grade >= 90.0) {
+            return 'A';
+        } else if (grade >= 80.0) {
+            return 'B';
+        } else if (grade >= 70.0) {
+            return 'C';
+        } else if (grade >= 60.0) {
+            return 'D';
+        } else {
+            return 'F';
+        }
     }
 
     public void setGrade(double grade) {
-        this.overallGrade = grade; 
+        this.grade = grade; 
     }
 
     // to be used with addAssignment in Course 
     public void addAssignment(Assignment assignment, Double score) {
         assignments.put(assignment, score);
+    }
+
+    public void printAssignments () {
+        for (Map.Entry<Assignment, Double> entry : assignments.entrySet()) {
+            System.out.println(entry.getKey().getName() + ", " + entry.getValue());
+        }
+    } 
+
+    public String toString() {
+        return "Name: " + name + "\nStudent ID: " + studentID + "\nGrade: " + grade + "% (" + getLetterGrade() + ")";
     }
 }
