@@ -8,6 +8,19 @@ This is an object-oriented programming project in Java. This file will serve as 
 - save function 
 - load save data 
 - create grade report file (for individual student or class)
+- grading tool
+
+### ADDITIONAL FUNCTIONALITY 
+- generate student report into a file?
+
+## SAVE DATA
+- serialize files to save data? worry about this later 
+
+## ROADMAP: 
+- create all the objects, classes and make them functional 
+- design user interaction
+- implement data saving 
+- UI?
 
 ---
 
@@ -18,6 +31,7 @@ This is an object-oriented programming project in Java. This file will serve as 
 - ID 
 - grade 
 - assignments
+- enlisted courses? (later)
 
 > students should only be accessable through their respective course. students are added to a course. students are referenced throughout the program by ID
 
@@ -81,14 +95,21 @@ This is an object-oriented programming project in Java. This file will serve as 
 - getFailRate(): return fail rate
 - getAverageScore(): calculate and return average exam score
 
-### ADDITIONAL FUNCTIONALITY 
-- generate student report into a file?
+--
 
-## SAVE DATA
-- serialize files to save data? worry about this later 
+## USER OPTIONS 
 
-## ROADMAP: 
-- create all the objects, classes and make them functional 
-- design user interaction
-- implement data saving 
-- UI? 
+### CONTEXT - HOME PAGE
+- add course (to course dashboard)
+- add student (to course - must be done within course context)
+- add assignment (to course - must be done within course context)
+- select student (must be done within course context)
+    - see student info 
+    - see student assignments/grades
+    - access specific assignment 
+- select course 
+    - see course average 
+    - view assignments list (with average score for each)
+    - view student list 
+    - drop student from class
+    - add student to class
