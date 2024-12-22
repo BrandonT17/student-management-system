@@ -30,6 +30,14 @@ public class Course {
             student.addAssignment(assignment, 0.0); // Initialize with a score of 0
         }
     }
+    
+    public String getName () {
+        return courseName;
+    }
+
+    public String getID () {
+        return courseID;
+    }
 
     public double getAverage() {
         if (students.isEmpty()) return 0.0; // Prevent division by zero
@@ -39,7 +47,7 @@ public class Course {
         }
         return total / students.size(); // Return the average
     }
-
+    
     public char getAverageLetter() {
         double average = getAverage();
         if (average >= 90.0) return 'A';
@@ -53,13 +61,17 @@ public class Course {
         return students;
     }
 
+    public int getNumStudents() {
+        return students.size();
+    }
+
     public List<Assignment> getAssignments() {
         return assignments;
     }
 
     @Override
     public String toString() {
-        return "Course: " + courseName + " (" + courseID + ")";
+        return courseID + ": " + courseName;
     }
 }
 

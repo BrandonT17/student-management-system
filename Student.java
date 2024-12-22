@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map; 
 import java.util.HashMap;
 
@@ -11,7 +12,6 @@ public class Student {
     private Map<Assignment, Double> assignments; // assn -> score
     private List<Course> courses; // all of the courses the student has 
     // constructor to create new student 
-   
     public Student(String name, int studentID) {
         this.name = name;
         this.studentID = studentID;

@@ -99,7 +99,6 @@ This is an object-oriented programming project in Java. This file will serve as 
 
 ## USER OPTIONS 
 
-### CONTEXT - HOME PAGE
 - add course (to course dashboard)
 - add student (to course - must be done within course context)
 - add assignment (to course - must be done within course context)
@@ -113,3 +112,14 @@ This is an object-oriented programming project in Java. This file will serve as 
     - view student list 
     - drop student from class
     - add student to class
+
+# UI 
+
+Main Menu:
+1. Add course
+2. View Courses
+3. Manage Courses
+4. Exit
+Select an option: 
+
+

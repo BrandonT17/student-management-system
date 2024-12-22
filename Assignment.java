@@ -19,10 +19,10 @@ public class Assignment {
     }
 
     public int getMaxScore () {
-        return maxscore;
+        return maxScore;
     }
 
-    public void getDescription () {
+    public String getDescription () {
         return description;
     }
 
