@@ -65,8 +65,25 @@ public class Main {
                     );
                     break;
                 case 3: // edit student (select a student)
-                case 4: // delete student 
-                case 5: // return to home menu 
+                    System.out.print("Enter the ID of the student you want to edit: ");
+                    id = scanner.nextInt();
+                    if (!students.containsKey(id)) {
+                        System.out.println("Student not found.");
+                    } else {
+                        // give user options on what to edit 
+                    }
+                case 4: // delete student
+                    System.out.print("Enter the ID of the student you want to remove: ");
+                    id = scanner.nextInt();
+                    if (!students.containsKey(id)) {
+                        System.out.println("Student not found.");
+                    } else {
+                        System.out.print("Are you sure you want to remove " + students.get(id).getName() + "? (y/n): ");
+                        // y = yes, n = no
+                        
+                    }
+                case 5: // return to home MENU
+                    break;
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
             }
