@@ -40,7 +40,7 @@ public class Course {
     }
 
     public double getAverage() {
-        if (students.isEmpty()) return 0.0; // Prevent division by zero
+        if (students.isEmpty()) return 100.0; // Prevent division by zero
         double total = 0.0;
         for (Student student : students) {
             total += student.getGrade(); // Use the student's grade
@@ -67,6 +67,10 @@ public class Course {
 
     public List<Assignment> getAssignments() {
         return assignments;
+    }
+
+    public int getNumAssignments() {
+        return assignments.size();
     }
 
     @Override

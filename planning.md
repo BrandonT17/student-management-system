@@ -115,11 +115,3 @@ This is an object-oriented programming project in Java. This file will serve as 
 
 # UI 
 
-Main Menu:
-1. Add course
-2. View Courses
-3. Manage Courses
-4. Exit
-Select an option: 
-
-
