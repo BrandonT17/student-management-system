@@ -56,22 +56,37 @@ public class Main {
                     String name = scanner.nextLine();
                     System.out.print("\nEnter the student's ID (digits only): ");
                     int id = scanner.nextInt();
-                    Student newStudent = new Student(name, id);
-                    students.put(id, newStudent);
+                    // if the ID already exists
+                    if (students.containsKey(id)) {
+                        System.out.println("ID already exists.");
+                    } else {
+                        Student newStudent = new Student(name, id);
+                        students.put(id, newStudent);
+                    }
                     break;
                 case 2: // view students
-                    students.forEach((key, value) -> 
-                        System.out.println(value.toString())
-                    );
+                    if (students.isEmpty()) {
+                        System.out.println("No students to view.");
+                    } else {
+                        students.forEach((key, value) -> 
+                            System.out.println(value.toString())
+                        );
+                    }
                     break;
                 case 3: // edit student (select a student)
-                    System.out.print("Enter the ID of the student you want to edit: ");
-                    id = scanner.nextInt();
-                    if (!students.containsKey(id)) {
-                        System.out.println("Student not found.");
+                    if (students.isEmpty()) {
+                        System.out.println("No students to edit.");
                     } else {
-                        // give user options on what to edit 
+                        System.out.print("Enter the ID of the student you want to edit: ");
+                        id = scanner.nextInt();
+                        if (!students.containsKey(id)) {
+                        System.out.println("Student not found.");
+                        } else {
+                            // give user options on what to edit 
+                            editStudent();
+                        }
                     }
+                    break;
                 case 4: // delete student
                     System.out.print("Enter the ID of the student you want to remove: ");
                     id = scanner.nextInt();
@@ -80,10 +95,17 @@ public class Main {
                     } else {
                         System.out.print("Are you sure you want to remove " + students.get(id).getName() + "? (y/n): ");
                         // y = yes, n = no
-                        
+                        String response = scanner.nextLine();
+                        if (response.equalsIgnoreCase("y")) {
+                            students.remove(id); // remove student from students map
+                            System.out.println("Student has been removed.");
+                        } else {
+                            System.out.println("No action.");
+                        }
+                        break;
                     }
-                case 5: // return to home MENU
-                    break;
+                // case 5: // return to home MENU
+                    
                 default:
                     System.out.println("Invalid choice. Please select a valid option.");
             }
@@ -91,8 +113,6 @@ public class Main {
             System.out.println("Invalid input. Please enter a number.");
         }
     }
-
-    
 
     // MANAGE COURSES
     public static void manageCourseOptions() {
@@ -146,6 +166,10 @@ public class Main {
         }
     }
    
+    public static void editStudent() {
+        System.out.print("1. Change Name\n2. Change ID");
+    }
+
     public static void createCourse() {
         System.out.print("Enter a course name (e.g., 'Languages & Automata'): ");
         String courseName = scanner.nextLine();
@@ -167,7 +191,7 @@ public class Main {
                 System.out.println((i + 1) + ". " + courses.get(i));
             }
         }
-    }
+    } 
     public static void displayAssignmentOptions() {
     }
 
