@@ -47,7 +47,7 @@ public class Main {
 
     // MANAGE STUDENTS
     public static void manageStudentOptions() {
-        System.out.print("1. Add Student\n2. View Students\n3. Edit Student\n4. Delete Student\n5. Go Back\nSelect an option (1-4): ");
+        System.out.print("1. Add Student\n2. View Students\n3. Delete Student\n4. Go Back\nSelect an option (1-4): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
@@ -73,21 +73,7 @@ public class Main {
                         );
                     }
                     break;
-                case 3: // edit student (select a student)
-                    if (students.isEmpty()) {
-                        System.out.println("No students to edit.");
-                    } else {
-                        System.out.print("Enter the ID of the student you want to edit: ");
-                        id = scanner.nextInt();
-                        if (!students.containsKey(id)) {
-                        System.out.println("Student not found.");
-                        } else {
-                            // give user options on what to edit 
-                            editStudent();
-                        }
-                    }
-                    break;
-                case 4: // delete student
+                case 3: // delete student
                     System.out.print("Enter the ID of the student you want to remove: ");
                     id = scanner.nextInt();
                     if (!students.containsKey(id)) {
@@ -166,10 +152,6 @@ public class Main {
         }
     }
    
-    public static void editStudent() {
-        System.out.print("1. Change Name\n2. Change ID");
-    }
-
     public static void createCourse() {
         System.out.print("Enter a course name (e.g., 'Languages & Automata'): ");
         String courseName = scanner.nextLine();
