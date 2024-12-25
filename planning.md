@@ -142,4 +142,50 @@ generate report:
 3. grade analysis (specific assignment)
 
 
+---
+
+ else {
+                        System.out.print("Enter Course ID (e.g. 'CS301'): ");
+                        String input = scanner.nextLine();
+                        // IMPORTANT: HOW DO YOU ACCESS COURSE FROM COURSELIST? 
+                        for (Course course : courses) {
+                            if (course.getID().equalsIgnoreCase(input)) {
+                                System.out.println("Course: " + course.getName());
+                                System.out.println("1. View Students");
+                                System.out.println("2. View Assignments");
+                                System.out.println("3. View Course Info");              System.out.print("Select an option: ");
+                   
+                                try {
+                                int choice = Integer.parseInt(scanner.nextLine()); 
+                                switch(choice) {
+                                    case 1:
+                                        if (course.getNumStudents() == 0) {
+                                        System.out.println("Class is empty.");
+                                        // displayStudentOptions();
+                                        } else {
+                                            course.getStudents(); 
+                                            // displayStudentOptions();
+                                        }
+                                        break;
+                                    case 2:
+                                if (course.getNumAssignments() == 0) {
+                                    System.out.println("No assignments found.");
+                                } else {
+                                    course.getAssignments();
+                                    displayAssignmentOptions();
+                                }
+                                break;
+                                case 3:
+                                System.out.println(course.toString() + "\n- # of Studients Enrolled: " + course.getNumStudents() + "\n- # of Assignments: " + course.getNumAssignments() + "\n- Average Course Grade: " + course.getAverage() + "% (" + course.getAverageLetter() + ")");
+                                break;
+                            default:
+                                System.out.println("Invalid choice. Please select a valid option.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input. Please enter a number.");
+                    }
+                } else {
+                    System.out.println("Course not found.");
+                }
+            }
 

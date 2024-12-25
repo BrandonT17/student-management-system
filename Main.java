@@ -99,26 +99,64 @@ public class Main {
 
     // MANAGE COURSES
     public static void manageCourseOptions() {
-        System.out.print("1. Add Course\n2. View Courses\n3. Enroll Students\n4. Remove Course\n5. Go Back\nSelect an option (1-5): ");
+        System.out.print("1. Add Course\n2. View Course\n3. Enroll Students\n4. Remove Course\n5. Go Back\nSelect an option (1-5): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
-                case 1:
+                case 1: // add course
                     createCourse();
                     break;
-                case 2: 
+                case 2: // view course
                     if (courses.isEmpty()) {
                         System.out.println("No courses available.");
                         break;
                     } else {
+                        System.out.println("My Courses:\n----------");
                         displayCourses();
-                        System.out.print("Enter course ID to access course info: ");
-                        scanner.nextLine();
+                        System.out.print("Enter course ID to access course info (no spaces): ");
+                        String courseID = scanner.nextLine();
+                        // check if courseID (ignoring case) is in the map 
+                        if (courses.containsKey(courseID.toLowerCase())) {
+                            Course currCourse = courses.get(courseID);
+                            System.out.println("Course: " + currCourse.getName());
+                            System.out.println("1. View Students\n2. View Assignments\n3. View Course Info\nSelect an option (1-3): ");
+                            try {
+                                choice = Integer.parseInt(scanner.nextLine());
+                                switch (choice) {
+                                    case 1: // display all the students in the course
+                                        currCourse.getStudents();
+                                    case 2: // view all the assignments for the course 
+                                        currCourse.getAssignments();
+                                    case 3: // view course details 
+                                        System.out.println(currCourse.toString());
+                                        System.out.println("# of Students Enrolled: " + currCourse.getNumStudents() + "\n# of Assignments: " + currCourse.getNumAssignments() + "\nAverage Course Grade: " + currCourse.getAverage());
+                                        break;
+                                    default:
+                                        System.out.println("Invalid choice. Please select a valid option.");
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("Invalid input. Please enter a number.");
+                            }
+                        }
                     }
                     
-                case 3:
-                case 4:
-                case 5:
+                case 3: // enroll student into a course
+                    System.out.print("Enter student ID: ");
+                    int studentID = Integer.parseInt(scanner.nextLine());
+                    if (!students.containsKey(studentID)) {
+                        System.out.println("Student not found.");
+                    } else {
+                        displayCourses();
+                        System.out.print("Enter the ID of the class you want to add " + students.get(studentID).getName() + " to: ");
+                        String courseID = scanner.nextLine();
+                        if (courses.containsKey(courseID.toLowerCase())) {
+                             courses.get(courseID).addStudent(students.get(studentID));
+                        } else {
+                            System.out.println("Class not found.");
+                        }
+                    }
+                case 4: // remove course 
+                case 5: // return to main menu 
                     break;
                 default: 
                     System.out.println("Invalid choice. Please select a valid option.");
