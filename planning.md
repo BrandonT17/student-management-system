@@ -115,3 +115,31 @@ This is an object-oriented programming project in Java. This file will serve as 
 
 # UI 
 
+main menu:
+1. manage students
+2. manage courses
+3. generate report 
+4. exit 
+
+
+manage students:
+1. add student 
+2. view students
+3. edit student 
+4. delete student 
+go back
+
+manage courses: 
+1. add course 
+2. view courses
+3. enroll students 
+4. remove course 
+go back 
+
+generate report: 
+1. student report
+2. course report 
+3. grade analysis (specific assignment)
+
+
+

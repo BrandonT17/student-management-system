@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
-    private static final Scanner scanner = new Scanner(System.in); // Make Scanner static (so i can use outside of main)
-    private static final List<Course> courses = new ArrayList<>();    
-    // MIGHT HAVE TO CHANGE TO A MAP FOR MORE EFFICIENT ACCESS + BETTER TIME COMPLEXITY 
-    // private static final Map<String, Course> courses = new HashMap<>();
+    private static final Scanner scanner = new Scanner(System.in); // global
+    private static final Map<String, Course> courses = new HashMap<>();
     private static final Map<Integer, Student> students = new HashMap<>(); // store students (aside from courses)
 
     public static void main(String[] args) {
@@ -55,13 +53,14 @@ public class Main {
                     System.out.print("Enter the student's name: ");
                     String name = scanner.nextLine();
                     System.out.print("\nEnter the student's ID (digits only): ");
-                    int id = scanner.nextInt();
+                    int id = Integer.parseInt(scanner.nextLine());
                     // if the ID already exists
                     if (students.containsKey(id)) {
                         System.out.println("ID already exists.");
                     } else {
                         Student newStudent = new Student(name, id);
                         students.put(id, newStudent);
+                        System.out.println("Student created successfuly. ");
                     }
                     break;
                 case 2: // view students
@@ -75,7 +74,7 @@ public class Main {
                     break;
                 case 3: // delete student
                     System.out.print("Enter the ID of the student you want to remove: ");
-                    id = scanner.nextInt();
+                    id = Integer.parseInt(scanner.nextLine());
                     if (!students.containsKey(id)) {
                         System.out.println("Student not found.");
                     } else {
@@ -84,16 +83,14 @@ public class Main {
                         String response = scanner.nextLine();
                         if (response.equalsIgnoreCase("y")) {
                             students.remove(id); // remove student from students map
-                            System.out.println("Student has been removed.");
+                            System.out.println("Student " + id + " has been removed.");
                         } else {
                             System.out.println("No action.");
                         }
                         break;
                     }
-                // case 5: // return to home MENU
-                    
-                default:
-                    System.out.println("Invalid choice. Please select a valid option.");
+                    default:
+                        System.out.println("Invalid choice. Please select a valid option.");
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a number.");
@@ -102,81 +99,61 @@ public class Main {
 
     // MANAGE COURSES
     public static void manageCourseOptions() {
-        if (courses.isEmpty()) {
-            System.out.println("No courses available.");
-        } else {
-            System.out.print("Enter Course ID (e.g. 'CS301'): ");
-            String input = scanner.nextLine();
-            // IMPORTANT: HOW DO YOU ACCESS COURSE FROM COURSELIST? 
-            for (Course course : courses) {
-                if (course.getID().equalsIgnoreCase(input)) {
-                    System.out.println("Course: " + course.getName());
-                    System.out.println("1. View Students");
-                    System.out.println("2. View Assignments");
-                    System.out.println("3. View Course Info"); // display average grade and general info abt course
-                    System.out.print("Select an option: ");
-                   
-                    try {
-                        int choice = Integer.parseInt(scanner.nextLine()); 
-                        switch(choice) {
-                            case 1:
-                                if (course.getNumStudents() == 0) {
-                                    System.out.println("Class is empty.");
-                                    // displayStudentOptions();
-                                } else {
-                                    course.getStudents(); 
-                                    // displayStudentOptions();
-                                }
-                                break;
-                            case 2:
-                                if (course.getNumAssignments() == 0) {
-                                    System.out.println("No assignments found.");
-                                } else {
-                                    course.getAssignments();
-                                    displayAssignmentOptions();
-                                }
-                                break;
-                            case 3:
-                                System.out.println(course.toString() + "\n- # of Students Enrolled: " + course.getNumStudents() + "\n- # of Assignments: " + course.getNumAssignments() + "\n- Average Course Grade: " + course.getAverage() + "% (" + course.getAverageLetter() + ")");
-                                break;
-                            default:
-                                System.out.println("Invalid choice. Please select a valid option.");
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. Please enter a number.");
+        System.out.print("1. Add Course\n2. View Courses\n3. Enroll Students\n4. Remove Course\n5. Go Back\nSelect an option (1-5): ");
+        try {
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    createCourse();
+                    break;
+                case 2: 
+                    if (courses.isEmpty()) {
+                        System.out.println("No courses available.");
+                        break;
+                    } else {
+                        displayCourses();
+                        System.out.print("Enter course ID to access course info: ");
+                        scanner.nextLine();
                     }
-                } else {
-                    System.out.println("Course not found.");
-                }
-            }
+                    
+                case 3:
+                case 4:
+                case 5:
+                    break;
+                default: 
+                    System.out.println("Invalid choice. Please select a valid option.");
+            } 
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
         }
     }
-   
+
     public static void createCourse() {
-        System.out.print("Enter a course name (e.g., 'Languages & Automata'): ");
+        System.out.print("Enter a course name (e.g. 'Data Structures'): ");
         String courseName = scanner.nextLine();
-        System.out.print("Enter a course ID (e.g., 'CS301'): ");
+        System.out.print("Enter a course ID (e.g. 'CS301'): ");
         String courseID = scanner.nextLine();
-        
-        Course newCourse = new Course(courseID, courseName);
-        courses.add(newCourse);
-        // courses.add(courseName + " (" + courseID + ")");
-        System.out.println("Course added successfully!");
+        if (courses.containsKey(courseID)) {
+            System.out.println("Course ID already exists.");
+        } else {
+            Course newCourse = new Course(courseID, courseName);
+            courses.put(courseID, newCourse);
+            System.out.println("Course created successfully.");
+        }
     }
 
     public static void displayCourses() {
-        if (courses.isEmpty()) {
-            System.out.println("No courses available.");
-        } else {
-            System.out.println("Courses:");
-            for (int i = 0; i < courses.size(); i++) {
-                System.out.println((i + 1) + ". " + courses.get(i));
-            }
-        }
-    } 
-    public static void displayAssignmentOptions() {
+        System.out.println("Courses:");
+        courses.forEach((key, value) -> {
+        System.out.println(value);
+        });
     }
 
-    // GENERATE REPORT 
+    public static void displayAssignmentOptions() {
+
+    }
+
+    // GENERATE REPORTS
+    
 }
 
