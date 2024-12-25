@@ -155,7 +155,23 @@ public class Main {
                             System.out.println("Class not found.");
                         }
                     }
-                case 4: // remove course 
+                case 4: // remove course
+                    System.out.print("Enter the ID of the class you want to remove: ");
+                    String courseID = scanner.nextLine();
+                    if (!courses.containsKey(courseID)) {
+                        System.out.println("Course not found.");
+                    } else {
+                        System.out.print("Are you sure you want to remove " + courses.get(courseID).getName() + "? (y/n): ");
+                        // y = yes, n = no
+                        String response = scanner.nextLine();
+                        if (response.equalsIgnoreCase("y")) {
+                            courses.remove(courseID); // remove student from students map
+                            System.out.println(courseID + " has been removed.");
+                        } else {
+                            System.out.println("No action.");
+                        }
+                    }
+                    break;
                 case 5: // return to main menu 
                     break;
                 default: 
