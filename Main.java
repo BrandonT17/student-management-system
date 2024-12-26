@@ -124,9 +124,16 @@ public class Main {
                                 choice = Integer.parseInt(scanner.nextLine());
                                 switch (choice) {
                                     case 1: // display all the students in the course
-                                        currCourse.getStudents();
-                                    case 2: // view all the assignments for the course 
+                                        System.out.println("Students: ");
+                                        students.forEach((key, value) -> 
+                                            System.out.println(value.toString())
+                                        );
+                                        // System.out.println(currCourse.getStudents());
+                                        break;
+                                    case 2: // view all the assignments for the course
+                                        System.out.println("Assignments: ");
                                         currCourse.getAssignments();
+                                        break;
                                     case 3: // view course details 
                                         System.out.println(currCourse.toString());
                                         System.out.println("# of Students Enrolled: " + currCourse.getNumStudents() + "\n# of Assignments: " + currCourse.getNumAssignments() + "\nAverage Course Grade: " + currCourse.getAverage());
@@ -139,7 +146,7 @@ public class Main {
                             }
                         }
                     }
-                    
+                    break;
                 case 3: // enroll student into a course
                     System.out.print("Enter student ID: ");
                     int studentID = Integer.parseInt(scanner.nextLine());
@@ -155,6 +162,7 @@ public class Main {
                             System.out.println("Class not found.");
                         }
                     }
+                    break;
                 case 4: // remove course
                     System.out.print("Enter the ID of the class you want to remove: ");
                     String courseID = scanner.nextLine();
