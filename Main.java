@@ -17,7 +17,7 @@ public class Main {
 
     // MAIN MENU
     public static void displayMainMenu() {
-        System.out.print("\nMAIN MENU:\n1. Manage Students\n2. Manage Courses\n3. Generate Report\n4. Exit Program\nSelect an option (1-4): ");
+        System.out.print("\n----------\nMAIN MENU:\n----------\n1. Manage Students\n2. Manage Courses\n3. Generate Report\n4. Exit Program\nSelect an option (1-4): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
@@ -25,12 +25,13 @@ public class Main {
                     manageStudentOptions();
                     break;
                 case 2:
-                    if (courses.size() != 0) {
+                    /*if (courses.size() != 0) {
                         displayCourses();
-                    }
+                    }*/
                     manageCourseOptions();
                     break;
                 case 3:
+                    manageReportOptions();
                     break;
                 case 4:
                     System.out.println("Exiting program. Goodbye!");
@@ -47,12 +48,12 @@ public class Main {
 
     // MANAGE STUDENTS
     public static void manageStudentOptions() {
-        System.out.print("1. Add Student\n2. View Students\n3. Delete Student\n4. Go Back\nSelect an option (1-4): ");
+        System.out.print("----------------\nManage Students:\n----------------\n1. Add Student\n2. View Students\n3. Delete Student\n4. Go Back\nSelect an option (1-4): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 1: // add student (create student)
-                    System.out.print("Enter the student's name: ");
+                    System.out.print("\nEnter the student's name: ");
                     String name = scanner.nextLine();
                     System.out.print("\nEnter the student's ID (digits only): ");
                     int id = Integer.parseInt(scanner.nextLine());
@@ -62,15 +63,16 @@ public class Main {
                     } else {
                         Student newStudent = new Student(name, id);
                         students.put(id, newStudent);
-                        System.out.println("Student created successfuly. ");
+                        System.out.println("\nStudent " + newStudent.toString() + " created successfuly. ");
                     }
                     break;
                 case 2: // view students
                     if (students.isEmpty()) {
                         System.out.println("No students to view.");
                     } else {
+                        System.out.println("---------\nStudents:\n---------");
                         students.forEach((key, value) -> 
-                            System.out.println(value.toString())
+                            System.out.println("* " + value.toString())
                         );
                     }
                     break;
@@ -101,7 +103,7 @@ public class Main {
 
     // MANAGE COURSES
     public static void manageCourseOptions() {
-        System.out.print("1. Add Course\n2. View Course\n3. Remove Course\n4. Go Back\nSelect an option (1-4): ");
+        System.out.print("---------------\nManage Courses:\n---------------\n1. Add Course\n2. View Course\n3. Remove Course\n4. Go Back\nSelect an option (1-4): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
@@ -113,15 +115,15 @@ public class Main {
                         System.out.println("No courses available.");
                         break;
                     } else {
-                        System.out.println("My Courses:\n----------");
+                        // System.out.println("Courses:\n----------");
                         displayCourses();
                         System.out.print("Enter course ID to access course info (no spaces): ");
                         String courseID = scanner.nextLine();
                         // check if courseID (ignoring case) is in the map 
                         if (courses.containsKey(courseID.toLowerCase())) {
                             Course currCourse = courses.get(courseID);
-                            System.out.println("Course: " + currCourse.getName());
-                            System.out.println("1. Enroll Student\n2. View Students\n3. Manage Assignments\n4. View Course Info\nSelect an option (1-4): ");
+                            System.out.println("\n-------\nCourse: [" + currCourse.toString() + "]\n-------");
+                            System.out.print("1. Enroll Student\n2. View Students\n3. Manage Assignments\n4. View Course Info\nSelect an option (1-4): ");
                             try {
                                 choice = Integer.parseInt(scanner.nextLine());
                                 switch (choice) {
@@ -132,6 +134,7 @@ public class Main {
                                             System.out.println("Student not found.");
                                         } else {
                                             currCourse.addStudent(students.get(studentID));
+                                            System.out.println("Student " + students.get(studentID).toString() + " added to " + currCourse.toString() + " successfully.");
                                         }
                                         break;
                                     case 2: // display all the students in the course
@@ -143,6 +146,7 @@ public class Main {
                                         break;
                                     case 3:
                                         manageAssignmentOptions(currCourse);
+                                        break;
                                     case 4: // view course details 
                                         System.out.println(currCourse.toString());
                                         System.out.println("# of Students Enrolled: " + currCourse.getNumStudents() + "\n# of Assignments: " + currCourse.getNumAssignments() + "\nAverage Course Grade: " + currCourse.getAverage());
@@ -158,17 +162,18 @@ public class Main {
                     break;
 
                 case 3: // remove course
+                    displayCourses();
                     System.out.print("Enter the ID of the class you want to remove: ");
                     String courseID = scanner.nextLine();
                     if (!courses.containsKey(courseID)) {
                         System.out.println("Course not found.");
                     } else {
-                        System.out.print("Are you sure you want to remove " + courses.get(courseID).getName() + "? (y/n): ");
+                        System.out.print("Are you sure you want to remove [" + courses.get(courseID).toString() + "]? (y/n): ");
                         // y = yes, n = no
                         String response = scanner.nextLine();
                         if (response.equalsIgnoreCase("y")) {
                             courses.remove(courseID); // remove student from students map
-                            System.out.println(courseID + " has been removed.");
+                            System.out.println(courseID.toUpperCase() + " has been removed.");
                         } else {
                             System.out.println("No action.");
                         }
@@ -178,6 +183,7 @@ public class Main {
                     break;
                 default: 
                     System.out.println("Invalid choice. Please select a valid option.");
+                    break;
             } 
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a number.");
@@ -199,15 +205,17 @@ public class Main {
     }
 
     public static void displayCourses() {
-        System.out.println("Courses:");
+        System.out.println("\nCourses:\n--------");
         courses.forEach((key, value) -> {
-        System.out.println(value);
+        System.out.println(value.toString());
         });
+        System.out.println("--------\n");
     }
 
     public static void manageAssignmentOptions(Course currCourse) { // pass currCourse as a parameter so we know where to add assignment and who's students to access ofc
         try {
-            int choice
+            System.out.print("-------------------\nManage Assignments:\n--------------------\n1. Add Assignment\n2. View Assignments\nSelect an option (1-2): ");
+            int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
             case 1: // add assignment to the course
                 System.out.print("Enter a name for the assignment: ");
@@ -221,13 +229,20 @@ public class Main {
                 System.out.println("Assignments: ");
                 System.out.print(currCourse.getAssignments());
                 break;      
+            
+            default: 
+                System.out.println("Invalid choice. Please select a valid option.");
+                break;
             }
         } catch (NumberFormatException e) {
-
+            System.out.println("Invalid input. Please enter a number.");
         }
     }
 
     // GENERATE REPORTS
+    public static void manageReportOptions() {
+        System.out.print("---------------\nManage Reports:\n---------------\n1. Create Student Report\n2. Create Course Report\n3. Access Previous Reports\nSelect an option (1-3): ");
+    }
     
 }
 

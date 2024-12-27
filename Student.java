@@ -47,13 +47,41 @@ public class Student {
         }
     }
 
-    public void setGrade(double grade) {
-        this.grade = grade; 
+    public void setGrade() {
+        if (assignments.isEmpty()) {
+            grade = 100.0; // default grade
+        }
+        double totalScore = 0.0;
+        double maxScore = 0.0;
+        for (Map.Entry<Assignment, Double> entry : assignments.entrySet()) {
+            totalScore += entry.getValue();
+            maxScore += entry.getKey().getMaxScore();
+        }
+        if (maxScore == 0) {
+            grade = 100.0;
+        } else {
+            grade = (totalScore / maxScore) * 100.0;
+        }
     }
 
     // to be used with addAssignment in Course 
     public void addAssignment(Assignment assignment, Double score) {
         assignments.put(assignment, score);
+        setGrade();
+    }
+
+    // grade assignments
+    public void scoreAssignment(Assignment assignment, Double score) {
+        if (assignments.containsKey(assignment)) {
+            assignments.put(assignment, score);
+            setGrade();
+        } else {
+            System.out.println("Assignment not found for this student.");
+        }
+    }
+
+    public double getAssignmentScore(Assignment assignment) {
+        return assignments.getOrDefault(assignment. 0.0);
     }
 
     public void printAssignments () {
@@ -64,6 +92,6 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Name: " + name + ", ID: " + studentID;
+        return name.toUpperCase() + " (" + studentID + ")";
     }
 }

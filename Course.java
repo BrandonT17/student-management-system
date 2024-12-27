@@ -75,7 +75,7 @@ public class Course {
 
     @Override
     public String toString() {
-        return courseID + ": " + courseName;
+        return courseID.toUpperCase() + ": " + courseName.toUpperCase();
     }
 }
 

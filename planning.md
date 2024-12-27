@@ -189,3 +189,6 @@ generate report:
                 }
             }
 
+assignment workflow
+
+--> access course --> "view assignments" or "add assignment" --> assignment creation menu --> add to assignment list of course
