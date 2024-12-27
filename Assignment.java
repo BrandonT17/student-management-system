@@ -6,6 +6,7 @@ public class Assignment {
     public Assignment (String name, int maxScore) {
         this.name = name;
         this.maxScore = maxScore; 
+        this.description = "No description.";
     }
 
     public Assignment (String name, int maxScore, String description) {
