@@ -53,44 +53,54 @@ public class Main {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 1: // add student (create student)
-                    System.out.print("\nEnter the student's name: ");
+                    System.out.println("------------\nAdd Student:\n------------");
+                    System.out.print("Enter the student's name: ");
                     String name = scanner.nextLine();
-                    System.out.print("\nEnter the student's ID (digits only): ");
+                    System.out.print("Enter the student's ID (digits only): ");
                     int id = Integer.parseInt(scanner.nextLine());
                     // if the ID already exists
                     if (students.containsKey(id)) {
-                        System.out.println("ID already exists.");
+                        System.out.println("> ID already exists.");
                     } else {
                         Student newStudent = new Student(name, id);
                         students.put(id, newStudent);
-                        System.out.println("\nStudent " + newStudent.toString() + " created successfuly. ");
+                        System.out.println("> Student " + newStudent.toString() + " created successfuly. ");
                     }
+                    manageStudentOptions();
                     break;
                 case 2: // view students
                     if (students.isEmpty()) {
-                        System.out.println("No students to view.");
+                        System.out.println("> No students to view.");
+                        pressAnyKey(); 
                     } else {
                         System.out.println("---------\nStudents:\n---------");
                         students.forEach((key, value) -> 
                             System.out.println("* " + value.toString())
                         );
                     }
+                    manageStudentOptions();
                     break;
                 case 3: // delete student
+                    if (students.isEmpty()) {
+                        System.out.println("> No students to remove.");
+                        manageStudentOptions();
+                        break;
+                    }
                     System.out.print("Enter the ID of the student you want to remove: ");
                     id = Integer.parseInt(scanner.nextLine());
                     if (!students.containsKey(id)) {
                         System.out.println("Student not found.");
                     } else {
-                        System.out.print("Are you sure you want to remove " + students.get(id).getName() + "? (y/n): ");
+                        System.out.print("Are you sure you want to remove " + students.get(id).getName().toUpperCase() + "? (y/n): ");
                         // y = yes, n = no
                         String response = scanner.nextLine();
                         if (response.equalsIgnoreCase("y")) {
                             students.remove(id); // remove student from students map
-                            System.out.println("Student " + id + " has been removed.");
+                            System.out.println("> Student " + id + " has been removed.");
                         } else {
-                            System.out.println("No action.");
+                            System.out.println("> No action.");
                         }
+                        manageStudentOptions();
                         break;
                     }
                     default:
@@ -109,10 +119,13 @@ public class Main {
             switch (choice) {
                 case 1: // add course
                     createCourse();
+                    manageCourseOptions();
                     break;
                 case 2: // view course
                     if (courses.isEmpty()) {
                         System.out.println("No courses available.");
+                        pressAnyKey();
+                        manageCourseOptions();
                         break;
                     } else {
                         // System.out.println("Courses:\n----------");
@@ -162,6 +175,11 @@ public class Main {
                     break;
 
                 case 3: // remove course
+                    if (courses.isEmpty()) {
+                        System.out.println("> No courses to remove.");
+                        pressAnyKey();
+                        break;
+                    }
                     displayCourses();
                     System.out.print("Enter the ID of the class you want to remove: ");
                     String courseID = scanner.nextLine();
@@ -178,11 +196,13 @@ public class Main {
                             System.out.println("No action.");
                         }
                     }
+                    manageCourseOptions();
                     break;
                 case 4: // return to main menu 
                     break;
                 default: 
                     System.out.println("Invalid choice. Please select a valid option.");
+                    manageCourseOptions();
                     break;
             } 
         } catch (NumberFormatException e) {
@@ -244,5 +264,9 @@ public class Main {
         System.out.print("---------------\nManage Reports:\n---------------\n1. Create Student Report\n2. Create Course Report\n3. Access Previous Reports\nSelect an option (1-3): ");
     }
     
+    public static void pressAnyKey() { 
+        System.out.print("\nPress [ENTER] to continue...");
+        scanner.nextLine();
+    }
 }
 

@@ -81,7 +81,7 @@ public class Student {
     }
 
     public double getAssignmentScore(Assignment assignment) {
-        return assignments.getOrDefault(assignment. 0.0);
+        return assignments.getOrDefault(assignment, 0.0);
     }
 
     public void printAssignments () {
