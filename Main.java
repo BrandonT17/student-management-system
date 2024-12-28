@@ -64,7 +64,7 @@ public class Main {
                     } else {
                         Student newStudent = new Student(name, id);
                         students.put(id, newStudent);
-                        System.out.println("> Student " + newStudent.toString() + " created successfuly. ");
+                        System.out.println("> " + newStudent.toString() + " added successfuly. ");
                     }
                     manageStudentOptions();
                     break;
@@ -151,10 +151,11 @@ public class Main {
                                         }
                                         break;
                                     case 2: // display all the students in the course
-                                        System.out.println("Students: ");
-                                        students.forEach((key, value) -> 
+                                        System.out.println("Students enrolled in " + currCourse.getName());
+                                        System.out.println(currCourse.getStudents());
+                                        /*students.forEach((key, value) -> 
                                             System.out.println(value.toString())
-                                        );
+                                        );*/
                                         // System.out.println(currCourse.getStudents());
                                         break;
                                     case 3:
