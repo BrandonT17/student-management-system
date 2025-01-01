@@ -66,6 +66,7 @@ public class Main {
                         students.put(id, newStudent);
                         System.out.println("> " + newStudent.toString() + " added successfuly. ");
                     }
+                    pressAnyKey();
                     manageStudentOptions();
                     break;
                 case 2: // view students
@@ -77,12 +78,14 @@ public class Main {
                         students.forEach((key, value) -> 
                             System.out.println("* " + value.toString())
                         );
+                        pressAnyKey();
                     }
                     manageStudentOptions();
                     break;
                 case 3: // delete student
                     if (students.isEmpty()) {
                         System.out.println("> No students to remove.");
+                        pressAnyKey();
                         manageStudentOptions();
                         break;
                     }
@@ -123,7 +126,7 @@ public class Main {
                     break;
                 case 2: // view course
                     if (courses.isEmpty()) {
-                        System.out.println("No courses available.");
+                        System.out.println("> No courses available.");
                         pressAnyKey();
                         manageCourseOptions();
                         break;
@@ -164,6 +167,7 @@ public class Main {
                                     case 4: // view course details 
                                         System.out.println(currCourse.toString());
                                         System.out.println("# of Students Enrolled: " + currCourse.getNumStudents() + "\n# of Assignments: " + currCourse.getNumAssignments() + "\nAverage Course Grade: " + currCourse.getAverage());
+                                        pressAnyKey();
                                         break;
                                     default:
                                         System.out.println("Invalid choice. Please select a valid option.");
@@ -216,6 +220,7 @@ public class Main {
         String courseName = scanner.nextLine();
         System.out.print("Enter a course ID (e.g. 'CS301'): ");
         String courseID = scanner.nextLine();
+            courseID = courseID.replace(" ", ""); // to remove any possible spaces
         if (courses.containsKey(courseID)) {
             System.out.println("Course ID already exists.");
         } else {
@@ -235,7 +240,7 @@ public class Main {
 
     public static void manageAssignmentOptions(Course currCourse) { // pass currCourse as a parameter so we know where to add assignment and who's students to access ofc
         try {
-            System.out.print("-------------------\nManage Assignments:\n--------------------\n1. Add Assignment\n2. View Assignments\nSelect an option (1-2): ");
+            System.out.print("-------------------\nManage Assignments:\n--------------------\n1. Add Assignment\n2. View Assignments\n3. Grade Assignments\nSelect an option (1-3): ");
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
             case 1: // add assignment to the course
@@ -250,7 +255,7 @@ public class Main {
                 System.out.println("Assignments: ");
                 System.out.print(currCourse.getAssignments());
                 break;      
-            
+                case 3: // list assignment, ask which one they want to grade  
             default: 
                 System.out.println("Invalid choice. Please select a valid option.");
                 break;

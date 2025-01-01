@@ -192,3 +192,9 @@ generate report:
 assignment workflow
 
 --> access course --> "view assignments" or "add assignment" --> assignment creation menu --> add to assignment list of course
+
+# TO-DO as of Jan 1 
+- to-string for printing assignments for a certain course 
+- grading implementation
+- make sure that when a student is added to a class, all existing assignments are added to that student 
+- grading implementation 
