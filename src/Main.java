@@ -312,15 +312,33 @@ public class Main {
     // GENERATE REPORTS
     public static void manageReportOptions() {
         try { 
-            System.out.print("---------------\nManage Reports:\n---------------\n1. Create Student Report\n2. Create Course Report\n3. Access Previous Reports\n4. Go Back\nSelect an option (1-4): ");
+            System.out.print("---------------\nManage Reports:\n---------------\n1. Create Student Report\n2. Create Course Report\n3. Go Back\nSelect an option (1-3): ");
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 1: // create student report
                     System.out.print("Enter student ID to generate grade report: ");
+                    int studentID = Integer.parseInt(scanner.nextLine());
+                    if (!students.containsKey(studentID)) {
+                        System.out.println("> Student not found.");
+                        pressAnyKey();
+                        manageReportOptions();
+                    } else {
+
+                    }
+                    break;
                 case 2: // create course report
-                    System.out.print("Enter course ID to generate grade report: ");
-                case 3: // access previous reports
-                case 4: // return to main menu
+                    System.out.print("Enter course ID to generate grade report (no spaces): ");
+                    String courseID = scanner.nextLine();
+                    if (!courses.containsKey(courseID.toLowerCase())) {
+                        System.out.println("> Course not found.");
+                        pressAnyKey();
+                        manageReportOptions();
+                    } else {
+                        // generatecoursereport(courseID);
+                    }
+                    break;
+                case 3: // go back
+                    break;
                 default: 
                     System.out.println("Invalid choice. Please select a valid option.");
                     break;
