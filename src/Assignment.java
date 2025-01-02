@@ -12,7 +12,7 @@ public class Assignment {
     public Assignment (String name, int maxScore, String description) {
         this.name = name;
         this.maxScore = maxScore;
-        this.description = description;
+        // this.description = description;
     }
 
     public String getName () {

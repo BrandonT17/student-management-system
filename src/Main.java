@@ -7,45 +7,40 @@ import java.util.Scanner;
 public class Main {
     private static final Scanner scanner = new Scanner(System.in); // global
     private static final Map<String, Course> courses = new HashMap<>();
-    private static final Map<Integer, Student> students = new HashMap<>(); // store students (aside from courses)
-
+    private static final Map<Integer, Student> students = new HashMap<>();
+    
     public static void main(String[] args) {
         while (true) { // Persistent menu loop
             displayMainMenu();
         }
     }
-
     // MAIN MENU
     public static void displayMainMenu() {
         System.out.print("\n----------\nMAIN MENU:\n----------\n1. Manage Students\n2. Manage Courses\n3. Generate Report\n4. Exit Program\nSelect an option (1-4): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
-                case 1:
+                case 1: // student menu
                     manageStudentOptions();
                     break;
-                case 2:
-                    /*if (courses.size() != 0) {
-                        displayCourses();
-                    }*/
+                case 2: // course menu
                     manageCourseOptions();
                     break;
-                case 3:
+                case 3: // report menu
                     manageReportOptions();
                     break;
-                case 4:
+                case 4: // exit program
                     System.out.println("Exiting program. Goodbye!");
                     scanner.close(); // Close Scanner
                     System.exit(0); // Terminate program
                     break;
-                default:
+                default: // if input Invalid
                     System.out.println("Invalid choice. Please select a valid option.");
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a number.");
         }
     }
-
     // MANAGE STUDENTS
     public static void manageStudentOptions() {
         System.out.print("----------------\nManage Students:\n----------------\n1. Add Student\n2. View Students\n3. Delete Student\n4. Go Back\nSelect an option (1-4): ");
@@ -70,10 +65,10 @@ public class Main {
                     manageStudentOptions();
                     break;
                 case 2: // view students
-                    if (students.isEmpty()) {
+                    if (students.isEmpty()) { // if students is empty 
                         System.out.println("> No students to view.");
                         pressAnyKey(); 
-                    } else {
+                    } else { // list students and allow user to select a student to see their overall info
                         System.out.println("---------\nStudents:\n---------");
                         students.forEach((key, value) -> 
                             System.out.println("* " + value.toString())
@@ -92,7 +87,7 @@ public class Main {
                     System.out.print("Enter the ID of the student you want to remove: ");
                     id = Integer.parseInt(scanner.nextLine());
                     if (!students.containsKey(id)) {
-                        System.out.println("Student not found.");
+                        System.out.println("> Student not found.");
                     } else {
                         System.out.print("Are you sure you want to remove " + students.get(id).getName().toUpperCase() + "? (y/n): ");
                         // y = yes, n = no
@@ -154,18 +149,17 @@ public class Main {
                                         }
                                         break;
                                     case 2: // display all the students in the course
-                                        System.out.println("Students enrolled in " + currCourse.getName());
-                                        System.out.println(currCourse.getStudents());
-                                        /*students.forEach((key, value) -> 
-                                            System.out.println(value.toString())
-                                        );*/
-                                        // System.out.println(currCourse.getStudents());
+                                        System.out.println("Students enrolled in " + currCourse.getName() + ":");
+                                        List<Student> courseStudents = currCourse.getStudents();
+                                        for (Student student : courseStudents) {
+                                            System.out.println("* " + student.toString());
+                                        }
                                         break;
                                     case 3:
                                         manageAssignmentOptions(currCourse);
                                         break;
                                     case 4: // view course details 
-                                        System.out.println(currCourse.toString());
+                                        System.out.println("\n" + currCourse.toString());
                                         System.out.println("# of Students Enrolled: " + currCourse.getNumStudents() + "\n# of Assignments: " + currCourse.getNumAssignments() + "\nAverage Course Grade: " + currCourse.getAverage());
                                         pressAnyKey();
                                         break;
@@ -175,6 +169,9 @@ public class Main {
                             } catch (NumberFormatException e) {
                                 System.out.println("Invalid input. Please enter a number.");
                             }
+                        } else {
+                            System.out.println("> Course not found.");
+                            pressAnyKey();
                         }
                     }
                     break;
@@ -226,16 +223,15 @@ public class Main {
         } else {
             Course newCourse = new Course(courseID, courseName);
             courses.put(courseID, newCourse);
-            System.out.println("Course created successfully.");
+            System.out.println("> Course [" + newCourse.toString() + "] created successfully.");
         }
     }
 
     public static void displayCourses() {
-        System.out.println("\nCourses:\n--------");
+        System.out.println("--------\nCourses:\n--------");
         courses.forEach((key, value) -> {
-        System.out.println(value.toString());
+        System.out.println("* " + value.toString());
         });
-        System.out.println("--------\n");
     }
 
     public static void manageAssignmentOptions(Course currCourse) { // pass currCourse as a parameter so we know where to add assignment and who's students to access ofc
@@ -251,23 +247,54 @@ public class Main {
                 Assignment newAssignment = new Assignment(assignmentName, maxScore);
                 currCourse.addAssignment(newAssignment);
             case 2: // view all the assignments for the course
+                if (currCourse.getNumAssignments() == 0) {
+                    System.out.println("No assignments found.");
+                    pressAnyKey();
+                    break;
+                }
                 System.out.println("Assignments: ");
-                System.out.print(currCourse.getAssignments());
+                List<Assignment> courseAssignments = currCourse.getAssignments();
+                for (Assignment assignment : courseAssignments) {
+                    System.out.println("* " + assignment.toString());
+                }
                 break;      
             case 3: // list assignment, ask which one they want to grade  
-                System.out.println("Assignments: ");
-                System.out.println(currCourse.getAssignments());
-                List<Assignment> courseAssignments = currCourse.getAssignments();
-                int count = 0;
+                if (currCourse.getNumAssignments() == 0) {
+                    System.out.println("No assignments found. ");
+                    pressAnyKey();
+                    break;
+                }
+                System.out.println("------------\nAssignments:\n------------ ");
+                // System.out.println(currCourse.getAssignments());
+                courseAssignments = currCourse.getAssignments(); // array for easier access of elements
+                int count = 1;
                 for (Assignment assignment : courseAssignments) {
                     System.out.println(count + ". " + assignment.toString());
+                    count++;
                 }
-                System.out.print("Select an assignment to grade (pick number): ");
+                System.out.print("Select an assignment to grade (enter assignment number): ");
+                choice = Integer.parseInt(scanner.nextLine());
+                if (choice < 1 || choice > courseAssignments.size()) {
+                    System.out.print("Invalid choice. Please select a valid option.");
+                    break;
+                } else {
+                    System.out.print("Grading Assignment:\n " + courseAssignments.get(choice-1));
+                }
+                
                 // list all of the students with that assignment and show their current score, then allow user to select a student and assign a score for that assignment
-                System.out.println("Select a student to grade (enter ID): ");
-                System.out.print("Enter the student's score: ");
-                double score = Double.parseDouble(scanner.nextLine());
-
+                List<Student> courseStudents = currCourse.getStudents();
+                for (Student student : courseStudents) {
+                    System.out.println("* " + student.toString());
+                }
+                System.out.println("Select a student to grade (Enter Student ID): ");
+                int studentID = Integer.parseInt(scanner.nextLine());
+                if (!students.containsKey(studentID)) {
+                    System.out.println("> Student not found.");
+                    pressAnyKey();
+                } else {
+                    System.out.print("Enter the student's score: ");
+                    double score = Double.parseDouble(scanner.nextLine());
+                }
                 break;
             default: 
                 System.out.println("Invalid choice. Please select a valid option.");
@@ -284,7 +311,23 @@ public class Main {
 
     // GENERATE REPORTS
     public static void manageReportOptions() {
-        System.out.print("---------------\nManage Reports:\n---------------\n1. Create Student Report\n2. Create Course Report\n3. Access Previous Reports\nSelect an option (1-3): ");
+        try { 
+            System.out.print("---------------\nManage Reports:\n---------------\n1. Create Student Report\n2. Create Course Report\n3. Access Previous Reports\n4. Go Back\nSelect an option (1-4): ");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1: // create student report
+                    System.out.print("Enter student ID to generate grade report: ");
+                case 2: // create course report
+                    System.out.print("Enter course ID to generate grade report: ");
+                case 3: // access previous reports
+                case 4: // return to main menu
+                default: 
+                    System.out.println("Invalid choice. Please select a valid option.");
+                    break;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
+        }
     }
     
     public static void pressAnyKey() { 
