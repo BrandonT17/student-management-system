@@ -76,7 +76,7 @@ public class Student {
             assignments.put(assignment, score);
             setGrade();
         } else {
-            System.out.println("Assignment not found for this student.");
+            System.out.println("> Assignment not found for this student.");
         }
     }
 
@@ -86,7 +86,7 @@ public class Student {
 
     public void printAssignments () {
         for (Map.Entry<Assignment, Double> entry : assignments.entrySet()) {
-            System.out.println(entry.getKey().getName() + ", " + entry.getValue());
+            System.out.println("* " + entry.getKey().getName() + ": " + entry.getValue() + "/" + entry.getKey().getMaxScore());
         }
     } 
 

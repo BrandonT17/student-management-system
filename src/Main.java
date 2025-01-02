@@ -35,15 +35,15 @@ public class Main {
                     System.exit(0); // Terminate program
                     break;
                 default: // if input Invalid
-                    System.out.println("Invalid choice. Please select a valid option.");
+                    System.out.println("> Invalid choice. Please select a valid option.");
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+            System.out.println("> Invalid input. Please enter a number.");
         }
     }
     // MANAGE STUDENTS
     public static void manageStudentOptions() {
-        System.out.print("----------------\nManage Students:\n----------------\n1. Add Student\n2. View Students\n3. Delete Student\n4. Go Back\nSelect an option (1-4): ");
+        System.out.print("----------------\nManage Students:\n----------------\n1. Add Student\n2. View All Students\n3. View Student Details\n4. Delete Student\n5. Go Back\nSelect an option (1-5): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
@@ -51,11 +51,13 @@ public class Main {
                     System.out.println("------------\nAdd Student:\n------------");
                     System.out.print("Enter the student's name: ");
                     String name = scanner.nextLine();
-                    System.out.print("Enter the student's ID (digits only): ");
+                    System.out.print("Enter the student's 4-digit ID (i.e. '1234'): ");
                     int id = Integer.parseInt(scanner.nextLine());
                     // if the ID already exists
                     if (students.containsKey(id)) {
                         System.out.println("> ID already exists.");
+                    } else if (id < 1000 || id > 9999) {
+                        System.out.println("> Invalid input. Please enter a 4-digit number.");
                     } else {
                         Student newStudent = new Student(name, id);
                         students.put(id, newStudent);
@@ -68,7 +70,7 @@ public class Main {
                     if (students.isEmpty()) { // if students is empty 
                         System.out.println("> No students to view.");
                         pressAnyKey(); 
-                    } else { // list students and allow user to select a student to see their overall info
+                    } else { // list students
                         System.out.println("---------\nStudents:\n---------");
                         students.forEach((key, value) -> 
                             System.out.println("* " + value.toString())
@@ -77,7 +79,30 @@ public class Main {
                     }
                     manageStudentOptions();
                     break;
-                case 3: // delete student
+                case 3: // list students and prompt user to select one to view info
+                    if (students.isEmpty()) {
+                        System.out.println("> No students to view.");
+                        pressAnyKey();
+                    } else {
+                        System.out.println("---------\nStudents:\n---------");
+                        students.forEach((key, value) -> 
+                            System.out.println("* " + value.toString())
+                        );
+                        System.out.print("Enter the ID of the student you want to view: ");
+                        id = Integer.parseInt(scanner.nextLine());
+                        if (!students.containsKey(id)) {
+                            System.out.println("> Student not found.");
+                        } else { // print student info
+                            System.out.println("---------------------\nView Student Details:\n---------------------");
+                            System.out.println("* " + students.get(id).toString());
+                            students.get(id).printAssignments();
+                            // System.out.println(students.get(id).printAssignments());
+                        }
+                        pressAnyKey();
+                        manageStudentOptions();
+                        break;
+                    }
+                case 4: // delete student
                     if (students.isEmpty()) {
                         System.out.println("> No students to remove.");
                         pressAnyKey();
@@ -101,11 +126,15 @@ public class Main {
                         manageStudentOptions();
                         break;
                     }
-                    default:
-                        System.out.println("Invalid choice. Please select a valid option.");
+                case 5: // go back
+                    break;
+                default:
+                    System.out.println("> Invalid choice. Please select a valid option.");
+                        
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+            System.out.println("> Invalid input. Please enter a number.");
+            
         }
     }
 
@@ -175,7 +204,6 @@ public class Main {
                         }
                     }
                     break;
-
                 case 3: // remove course
                     if (courses.isEmpty()) {
                         System.out.println("> No courses to remove.");
@@ -203,12 +231,12 @@ public class Main {
                 case 4: // return to main menu 
                     break;
                 default: 
-                    System.out.println("Invalid choice. Please select a valid option.");
+                    System.out.println("> Invalid choice. Please select a valid option.");
                     manageCourseOptions();
                     break;
             } 
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+            System.out.println("> Invalid input. Please enter a number.");
         }
     }
 
@@ -275,10 +303,10 @@ public class Main {
                 System.out.print("Select an assignment to grade (enter assignment number): ");
                 choice = Integer.parseInt(scanner.nextLine());
                 if (choice < 1 || choice > courseAssignments.size()) {
-                    System.out.print("Invalid choice. Please select a valid option.");
+                    System.out.print("> Invalid choice. Please select a valid option.");
                     break;
                 } else {
-                    System.out.print("Grading Assignment:\n " + courseAssignments.get(choice-1));
+                    System.out.println("-----------------\nGrade Assignment:\n----------------- " + courseAssignments.get(choice-1));
                 }
                 
                 // list all of the students with that assignment and show their current score, then allow user to select a student and assign a score for that assignment
@@ -286,7 +314,7 @@ public class Main {
                 for (Student student : courseStudents) {
                     System.out.println("* " + student.toString());
                 }
-                System.out.println("Select a student to grade (Enter Student ID): ");
+                System.out.print("Select a student to grade (Enter Student ID): ");
                 int studentID = Integer.parseInt(scanner.nextLine());
                 if (!students.containsKey(studentID)) {
                     System.out.println("> Student not found.");
@@ -294,14 +322,15 @@ public class Main {
                 } else {
                     System.out.print("Enter the student's score: ");
                     double score = Double.parseDouble(scanner.nextLine());
+                    students.get(studentID).scoreAssignment(courseAssignments.get(choice-1), score); 
                 }
                 break;
             default: 
-                System.out.println("Invalid choice. Please select a valid option.");
+                System.out.println("> Invalid choice. Please select a valid option.");
                 break;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+            System.out.println("> Invalid input. Please enter a number.");
         }
     }
 
@@ -340,11 +369,11 @@ public class Main {
                 case 3: // go back
                     break;
                 default: 
-                    System.out.println("Invalid choice. Please select a valid option.");
+                    System.out.println("> Invalid choice. Please select a valid option.");
                     break;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+            System.out.println("> Invalid input. Please enter a number.");
         }
     }
     
