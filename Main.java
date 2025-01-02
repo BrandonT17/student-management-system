@@ -250,12 +250,25 @@ public class Main {
                 int maxScore = Integer.parseInt(scanner.nextLine());
                 Assignment newAssignment = new Assignment(assignmentName, maxScore);
                 currCourse.addAssignment(newAssignment);
-                                        
             case 2: // view all the assignments for the course
                 System.out.println("Assignments: ");
                 System.out.print(currCourse.getAssignments());
                 break;      
-                case 3: // list assignment, ask which one they want to grade  
+            case 3: // list assignment, ask which one they want to grade  
+                System.out.println("Assignments: ");
+                System.out.println(currCourse.getAssignments());
+                List<Assignment> courseAssignments = currCourse.getAssignments();
+                int count = 0;
+                for (Assignment assignment : courseAssignments) {
+                    System.out.println(count + ". " + assignment.toString());
+                }
+                System.out.print("Select an assignment to grade (pick number): ");
+                // list all of the students with that assignment and show their current score, then allow user to select a student and assign a score for that assignment
+                System.out.println("Select a student to grade (enter ID): ");
+                System.out.print("Enter the student's score: ");
+                double score = Double.parseDouble(scanner.nextLine());
+
+                break;
             default: 
                 System.out.println("Invalid choice. Please select a valid option.");
                 break;
@@ -263,6 +276,10 @@ public class Main {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a number.");
         }
+    }
+
+    // GRADE ASSIGNMENTS (in course context)
+    public static void gradeAssignment() {
     }
 
     // GENERATE REPORTS
