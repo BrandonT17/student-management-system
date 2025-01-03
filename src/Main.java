@@ -173,9 +173,10 @@ public class Main {
                                         if (!students.containsKey(studentID)) {
                                             System.out.println("Student not found.");
                                         } else {
-                                            currCourse.addStudent(students.get(studentID));
+                                            students.get(studentID).enrollInCourse(currCourse);
                                             System.out.println("Student " + students.get(studentID).toString() + " added to " + currCourse.toString() + " successfully.");
                                         }
+                                        manageCourseOptions();
                                         break;
                                     case 2: // display all the students in the course
                                         System.out.println("Students enrolled in " + currCourse.getName() + ":");
@@ -272,11 +273,12 @@ public class Main {
                 String assignmentName = scanner.nextLine();
                 System.out.print("How many points is this assignment worth?: ");
                 int maxScore = Integer.parseInt(scanner.nextLine());
-                Assignment newAssignment = new Assignment(assignmentName, maxScore);
-                currCourse.addAssignment(newAssignment);
+                Assignment newAssignment = new Assignment(assignmentName, maxScore, currCourse);
+                currCourse.addAssignment(newAssignment); 
             case 2: // view all the assignments for the course
                 if (currCourse.getNumAssignments() == 0) {
                     System.out.println("No assignments found.");
+                    manageAssignmentOptions(currCourse);
                     pressAnyKey();
                     break;
                 }
@@ -306,7 +308,7 @@ public class Main {
                     System.out.print("> Invalid choice. Please select a valid option.");
                     break;
                 } else {
-                    System.out.println("-----------------\nGrade Assignment:\n----------------- " + courseAssignments.get(choice-1));
+                    System.out.println("-----------------\nGrade Assignment:" + courseAssignments.get(choice-1) + "\n----------------- ");
                 }
                 
                 // list all of the students with that assignment and show their current score, then allow user to select a student and assign a score for that assignment

@@ -1,18 +1,17 @@
 public class Assignment {
     private String name; // name of the Assignment
     private int maxScore; // maximum score possible 
-    // private String description; 
+    private Course course; // course that the assignment belongs to 
 
-    public Assignment (String name, int maxScore) {
+    public Assignment (String name, int maxScore, Course course) {
         this.name = name;
         this.maxScore = maxScore; 
-        // this.description = "No description.";
+        this.course = course;
     }
 
     public Assignment (String name, int maxScore, String description) {
         this.name = name;
         this.maxScore = maxScore;
-        // this.description = description;
     }
 
     public String getName () {
@@ -23,21 +22,16 @@ public class Assignment {
         return maxScore;
     }
 
-    /*public String getDescription () {
-        return description;
-    }*/
-
     public void setMaxScore (int score) {
         this.maxScore = score; 
     }
 
-    /*public void setDescription (String des) {
-        this.description = des; 
-    }*/
-
-    public String toString() {
-        return name + " (" + maxScore + " points)";
+    public Course getCourse() {
+        return course;
     }
-
-    // perhaps add a function to print all assignment details (for the particular student)
+    
+    public String toString() {
+        return name.toUpperCase() + " (" + maxScore + " pts)";
+        // EX: HW1 (20 pts)
+    }
 }

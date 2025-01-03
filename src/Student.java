@@ -17,7 +17,7 @@ public class Student {
         this.studentID = studentID;
         this.grade = 100.0; // initial grade is 100.0
         this.assignments = new HashMap<>();
-
+        this.courses = new ArrayList<>();
     }
 
     // functions for the student class
@@ -86,9 +86,19 @@ public class Student {
 
     public void printAssignments () {
         for (Map.Entry<Assignment, Double> entry : assignments.entrySet()) {
-            System.out.println("* " + entry.getKey().getName() + ": " + entry.getValue() + "/" + entry.getKey().getMaxScore());
+            Assignment assignment = entry.getKey();
+            double score = entry.getValue();
+            System.out.println("* (" + assignment.getCourse().getID().toUpperCase() + ") " + assignment.getName() + " : " + score + "/" + assignment.getMaxScore());
+            // (CS261) HW1 : 17.5/20 pts
         }
-    } 
+    }
+
+    public void enrollInCourse(Course course) {
+        if (!courses.contains(course)) {
+            courses.add(course);
+            course.addStudent(this);
+        }
+    }
 
     @Override
     public String toString() {
