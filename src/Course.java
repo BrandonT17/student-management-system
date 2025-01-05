@@ -45,7 +45,8 @@ public class Course {
         for (Student student : students) {
             total += student.getGrade(); // Use the student's grade
         }
-        return total / students.size(); // Return the average
+        double average = total / students.size();
+        return Math.round(average * 100.0) / 100.0; // Return the average 0.00
     }
     
     public char getAverageLetter() {

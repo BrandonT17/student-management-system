@@ -97,7 +97,7 @@ public class Student {
         if (!courses.contains(course)) {
             courses.add(course);
             course.addStudent(this);
-        }
+        }    
     }
 
     @Override

@@ -30,12 +30,20 @@ public class Main {
                     manageReportOptions();
                     break;
                 case 4: // exit program
-                    System.out.println("Exiting program. Goodbye!");
-                    scanner.close(); // Close Scanner
-                    System.exit(0); // Terminate program
+                    System.out.print("Are you sure you want to exit the program? (y/n): ");
+                    String response = scanner.nextLine();
+                    if (response.equalsIgnoreCase("y")) {
+                        System.out.println("Exiting program. Goodbye!");
+                        scanner.close(); // Close Scanner
+                        System.exit(0); // Terminate program
+                        break;
+                    } else {
+                        System.out.println("> No action.");
+                    }
+                    displayMainMenu();
                     break;
                 default: // if input Invalid
-                    System.out.println("> Invalid choice. Please select a valid option.");
+                System.out.println("> Invalid choice. Please select a valid option.");
             }
         } catch (NumberFormatException e) {
             System.out.println("> Invalid input. Please enter a number.");
@@ -50,19 +58,28 @@ public class Main {
                 case 1: // add student (create student)
                     System.out.println("------------\nAdd Student:\n------------");
                     System.out.print("Enter the student's name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Enter the student's 4-digit ID (i.e. '1234'): ");
-                    int id = Integer.parseInt(scanner.nextLine());
-                    // if the ID already exists
-                    if (students.containsKey(id)) {
-                        System.out.println("> ID already exists.");
-                    } else if (id < 1000 || id > 9999) {
-                        System.out.println("> Invalid input. Please enter a 4-digit number.");
-                    } else {
-                        Student newStudent = new Student(name, id);
-                        students.put(id, newStudent);
-                        System.out.println("> " + newStudent.toString() + " added successfuly. ");
+                    String name = scanner.nextLine().trim();
+
+                    int id = 0; // Declare ID outside the loop for later use
+                    boolean validID = false; // Flag to check for valid ID
+                    while (!validID) {
+                        System.out.print("Enter the student's 4-digit ID (i.e. '1234'): ");
+                        try {
+                            id = Integer.parseInt(scanner.nextLine());
+                            if (id < 1000 || id > 9999) {
+                                System.out.println("> Invalid input. Please enter a 4-digit number.");
+                            } else if (students.containsKey(id)) {
+                                System.out.println("> ID already exists.");
+                            } else {
+                                validID = true; // ID is valid, exit the loop
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("> Invalid input. Please enter a numeric 4-digit ID.");
+                        }
                     }
+                    Student newStudent = new Student(name, id);
+                    students.put(id, newStudent);
+                    System.out.println("> " + newStudent.toString() + " added successfully.");
                     pressAnyKey();
                     manageStudentOptions();
                     break;
@@ -71,7 +88,7 @@ public class Main {
                         System.out.println("> No students to view.");
                         pressAnyKey(); 
                     } else { // list students
-                        System.out.println("---------\nStudents:\n---------");
+                        System.out.println("------------------\nView All Students:\n------------------");
                         students.forEach((key, value) -> 
                             System.out.println("* " + value.toString())
                         );
@@ -81,35 +98,47 @@ public class Main {
                     break;
                 case 3: // list students and prompt user to select one to view info
                     if (students.isEmpty()) {
-                        System.out.println("> No students to view.");
+                        System.out.println("---------------------\nView Student Details:\n---------------------> No students to view.");
                         pressAnyKey();
                     } else {
-                        System.out.println("---------\nStudents:\n---------");
+                        System.out.println("---------------------\nView Student Details:\n---------------------");
                         students.forEach((key, value) -> 
                             System.out.println("* " + value.toString())
                         );
-                        System.out.print("Enter the ID of the student you want to view: ");
-                        id = Integer.parseInt(scanner.nextLine());
-                        if (!students.containsKey(id)) {
-                            System.out.println("> Student not found.");
-                        } else { // print student info
-                            System.out.println("---------------------\nView Student Details:\n---------------------");
-                            System.out.println("* " + students.get(id).toString());
-                            students.get(id).printAssignments();
-                            // System.out.println(students.get(id).printAssignments());
+                        
+                        id = 0; // Declare the ID variable
+                        validID = false; // Flag for valid ID
+                        while (!validID) {
+                            System.out.print("\nEnter the ID of the student you want to view: ");
+                            try {
+                                id = Integer.parseInt(scanner.nextLine());
+                                if (!students.containsKey(id)) {
+                                    System.out.println("> Student not found. Please try again.");
+                                } else {
+                                    validID = true; // Exit loop if the ID exists
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("> Invalid input. Please enter a numeric 4-digit ID.");
+                            }
                         }
-                        pressAnyKey();
-                        manageStudentOptions();
-                        break;
+
+                        // Print student info once a valid ID is entered
+                        System.out.println("----------------\nStudent Details:\n----------------");
+                        System.out.println("Name:      " + students.get(id).getName().toUpperCase() + "\nStudentID: " + id + "\nGrades:");
+                        students.get(id).printAssignments();
+                        // System.out.println(students.get(id).printAssignments());
                     }
+                    pressAnyKey();
+                    manageStudentOptions(); 
+                    break;
                 case 4: // delete student
                     if (students.isEmpty()) {
-                        System.out.println("> No students to remove.");
+                        System.out.println("---------------\nDelete Student:\n---------------\n> No students to remove.");
                         pressAnyKey();
                         manageStudentOptions();
                         break;
                     }
-                    System.out.print("Enter the ID of the student you want to remove: ");
+                    System.out.print("---------------\nDelete Student:\n---------------\nEnter the ID of the student you want to remove: ");
                     id = Integer.parseInt(scanner.nextLine());
                     if (!students.containsKey(id)) {
                         System.out.println("> Student not found.");
@@ -140,7 +169,7 @@ public class Main {
 
     // MANAGE COURSES
     public static void manageCourseOptions() {
-        System.out.print("---------------\nManage Courses:\n---------------\n1. Add Course\n2. View Course\n3. Remove Course\n4. Go Back\nSelect an option (1-4): ");
+        System.out.print("---------------\nManage Courses:\n---------------\n1. Add Course\n2. Select Course\n3. View All Courses\n4. Remove Course\n5. Go Back\nSelect an option (1-5): ");
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
@@ -158,54 +187,30 @@ public class Main {
                         // System.out.println("Courses:\n----------");
                         displayCourses();
                         System.out.print("Enter course ID to access course info (no spaces): ");
-                        String courseID = scanner.nextLine();
+                        String courseID = scanner.nextLine().trim().toUpperCase();
                         // check if courseID (ignoring case) is in the map 
-                        if (courses.containsKey(courseID.toLowerCase())) {
+                        if (courses.containsKey(courseID)) {
                             Course currCourse = courses.get(courseID);
-                            System.out.println("\n-------\nCourse: [" + currCourse.toString() + "]\n-------");
-                            System.out.print("1. Enroll Student\n2. View Students\n3. Manage Assignments\n4. View Course Info\nSelect an option (1-4): ");
-                            try {
-                                choice = Integer.parseInt(scanner.nextLine());
-                                switch (choice) {
-                                    case 1: // enroll student
-                                        System.out.print("Enter student ID: ");
-                                        int studentID = Integer.parseInt(scanner.nextLine());
-                                        if (!students.containsKey(studentID)) {
-                                            System.out.println("Student not found.");
-                                        } else {
-                                            students.get(studentID).enrollInCourse(currCourse);
-                                            System.out.println("Student " + students.get(studentID).toString() + " added to " + currCourse.toString() + " successfully.");
-                                        }
-                                        manageCourseOptions();
-                                        break;
-                                    case 2: // display all the students in the course
-                                        System.out.println("Students enrolled in " + currCourse.getName() + ":");
-                                        List<Student> courseStudents = currCourse.getStudents();
-                                        for (Student student : courseStudents) {
-                                            System.out.println("* " + student.toString());
-                                        }
-                                        break;
-                                    case 3:
-                                        manageAssignmentOptions(currCourse);
-                                        break;
-                                    case 4: // view course details 
-                                        System.out.println("\n" + currCourse.toString());
-                                        System.out.println("# of Students Enrolled: " + currCourse.getNumStudents() + "\n# of Assignments: " + currCourse.getNumAssignments() + "\nAverage Course Grade: " + currCourse.getAverage());
-                                        pressAnyKey();
-                                        break;
-                                    default:
-                                        System.out.println("Invalid choice. Please select a valid option.");
-                                }
-                            } catch (NumberFormatException e) {
-                                System.out.println("Invalid input. Please enter a number.");
-                            }
+                            displayIndividualCourse(currCourse);
+                            manageCourseOptions();
                         } else {
                             System.out.println("> Course not found.");
                             pressAnyKey();
                         }
                     }
                     break;
-                case 3: // remove course
+                case 3: // view all courses
+                    if (courses.isEmpty()) {
+                        System.out.println("> No courses available.");
+                        pressAnyKey();
+                        break;
+                    } else {
+                        displayCourses();
+                    }
+                    pressAnyKey();
+                    manageCourseOptions();
+                    break;
+                case 4: // remove course
                     if (courses.isEmpty()) {
                         System.out.println("> No courses to remove.");
                         pressAnyKey();
@@ -213,23 +218,23 @@ public class Main {
                     }
                     displayCourses();
                     System.out.print("Enter the ID of the class you want to remove: ");
-                    String courseID = scanner.nextLine();
+                    String courseID = scanner.nextLine().trim().toUpperCase();
                     if (!courses.containsKey(courseID)) {
-                        System.out.println("Course not found.");
+                        System.out.println("> Course not found.");
                     } else {
                         System.out.print("Are you sure you want to remove [" + courses.get(courseID).toString() + "]? (y/n): ");
                         // y = yes, n = no
                         String response = scanner.nextLine();
                         if (response.equalsIgnoreCase("y")) {
                             courses.remove(courseID); // remove student from students map
-                            System.out.println(courseID.toUpperCase() + " has been removed.");
+                            System.out.println("> " + courseID.toUpperCase() + " has been removed.");
                         } else {
                             System.out.println("No action.");
                         }
                     }
                     manageCourseOptions();
                     break;
-                case 4: // return to main menu 
+                case 5: // return to main menu 
                     break;
                 default: 
                     System.out.println("> Invalid choice. Please select a valid option.");
@@ -243,9 +248,9 @@ public class Main {
 
     public static void createCourse() {
         System.out.print("Enter a course name (e.g. 'Data Structures'): ");
-        String courseName = scanner.nextLine();
+        String courseName = scanner.nextLine().trim();
         System.out.print("Enter a course ID (e.g. 'CS301'): ");
-        String courseID = scanner.nextLine();
+        String courseID = scanner.nextLine().trim().toUpperCase();
             courseID = courseID.replace(" ", ""); // to remove any possible spaces
         if (courses.containsKey(courseID)) {
             System.out.println("Course ID already exists.");
@@ -336,8 +341,56 @@ public class Main {
         }
     }
 
-    // GRADE ASSIGNMENTS (in course context)
-    public static void gradeAssignment() {
+    public static void displayIndividualCourse(Course currCourse) {
+        int choice;
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("\n-------\nCourse: [" + currCourse.toString() + "]\n-------");
+            System.out.print("1. Enroll Student\n2. View Students\n3. Manage Assignments\n4. View Course Info\n5. Go Back\nSelect an option (1-5): ");
+            
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1: // Enroll student
+                        System.out.print("Enter student ID: ");
+                        int studentID = Integer.parseInt(scanner.nextLine());
+                        if (!students.containsKey(studentID)) {
+                            System.out.println("> Student not found.");
+                        } else {
+                            students.get(studentID).enrollInCourse(currCourse);
+                            System.out.println("Student " + students.get(studentID).toString() + " added to " + currCourse.toString() + " successfully.");
+                        }
+                        // manageCourseOptions();
+                        break;
+                    case 2: // View students
+                        System.out.println("Students enrolled in " + currCourse.getName() + ":");
+                        List<Student> courseStudents = currCourse.getStudents();
+                        for (Student student : courseStudents) {
+                            System.out.println("* " + student.toString());
+                        }
+                        break;
+                    case 3: // Manage assignments
+                        manageAssignmentOptions(currCourse);                        
+                        break;
+                    case 4: // View course info
+                         System.out.println("\n" + currCourse.toString());
+                        System.out.println("# of Students Enrolled: " + currCourse.getNumStudents() + "\n# of Assignments: " + currCourse.getNumAssignments() + "\nAverage Course Grade: " + currCourse.getAverage());
+                        pressAnyKey();
+                        // manageCourseOptions();
+                        break;
+                    case 5: // Exit course
+                        System.out.println("> Exiting course.");
+                        pressAnyKey();
+                        
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        } while (true); // Keep looping until the user chooses to exit
     }
 
     // GENERATE REPORTS
