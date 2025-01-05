@@ -33,7 +33,7 @@ public class Main {
                     System.out.print("Are you sure you want to exit the program? (y/n): ");
                     String response = scanner.nextLine();
                     if (response.equalsIgnoreCase("y")) {
-                        System.out.println("Exiting program. Goodbye!");
+                        System.out.println("> Exiting program. Goodbye!");
                         scanner.close(); // Close Scanner
                         System.exit(0); // Terminate program
                         break;
@@ -313,7 +313,7 @@ public class Main {
                     System.out.print("> Invalid choice. Please select a valid option.");
                     break;
                 } else {
-                    System.out.println("-----------------\nGrade Assignment:" + courseAssignments.get(choice-1) + "\n----------------- ");
+                    System.out.println("-----------------\nGrade Assignment: " + courseAssignments.get(choice-1) + "\n----------------- ");
                 }
                 
                 // list all of the students with that assignment and show their current score, then allow user to select a student and assign a score for that assignment
@@ -359,7 +359,7 @@ public class Main {
                             System.out.println("> Student not found.");
                         } else {
                             students.get(studentID).enrollInCourse(currCourse);
-                            System.out.println("Student " + students.get(studentID).toString() + " added to " + currCourse.toString() + " successfully.");
+                            System.out.println("> Student " + students.get(studentID).toString() + " added to " + currCourse.toString() + " successfully.");
                         }
                         // manageCourseOptions();
                         break;

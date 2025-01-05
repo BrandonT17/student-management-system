@@ -33,19 +33,20 @@ public class Student {
         return this.grade; 
     }
 
-    public char getLetterGrade() {
-        if (grade >= 90.0) {
+    /*public char getLetterGrade(Course course) { // calculate letter grade for a course
+        double average = course.getAverage();
+        if (average >= 90.0) {
             return 'A';
-        } else if (grade >= 80.0) {
+        } else if (average >= 80.0) {
             return 'B';
-        } else if (grade >= 70.0) {
+        } else if (average >= 70.0) {
             return 'C';
-        } else if (grade >= 60.0) {
+        } else if (average >= 60.0) {
             return 'D';
         } else {
             return 'F';
         }
-    }
+    }*/
 
     public void setGrade() {
         if (assignments.isEmpty()) {
@@ -93,6 +94,10 @@ public class Student {
         }
     }
 
+    public List<Course> getCourses() { // return all of a student's courses
+        return courses;
+    }
+
     public void enrollInCourse(Course course) {
         if (!courses.contains(course)) {
             courses.add(course);
@@ -104,4 +109,23 @@ public class Student {
     public String toString() {
         return name.toUpperCase() + " (" + studentID + ")";
     }
+
+    // additional functions
+    public double getGradeForCourse(Course course) {
+    if (!courses.contains(course)) {
+        return 0.0;  // Return 0.0 if the student is not enrolled in the course
+    }
+    // You can modify this logic based on how you store grades for each course
+    return grade;
+}
+
+public char getLetterGradeForCourse(Course course) {
+    double grade = getGradeForCourse(course);
+    if (grade >= 90.0) return 'A';
+    if (grade >= 80.0) return 'B';
+    if (grade >= 70.0) return 'C';
+    if (grade >= 60.0) return 'D';
+    return 'F';
+}
+
 }
